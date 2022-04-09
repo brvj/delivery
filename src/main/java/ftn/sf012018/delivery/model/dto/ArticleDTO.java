@@ -1,5 +1,6 @@
 package ftn.sf012018.delivery.model.dto;
 
+import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.jpa.user.Store;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,5 +17,5 @@ public class ArticleDTO {
     private String description;
     private double price;
     private String imagePath;
-    private Store storeDTO;
+    private StoreDTO storeDTO;
 }
