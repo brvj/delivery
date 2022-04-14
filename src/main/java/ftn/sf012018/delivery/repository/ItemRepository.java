@@ -1,6 +1,6 @@
 package ftn.sf012018.delivery.repository;
 
-import ftn.sf012018.delivery.model.jpa.Item;
+import ftn.sf012018.delivery.model.mappings.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

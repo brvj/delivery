@@ -1,8 +1,8 @@
 package ftn.sf012018.delivery.converter.user;
 
 import ftn.sf012018.delivery.model.dto.user.CustomerDTO;
-import ftn.sf012018.delivery.model.jpa.Order;
-import ftn.sf012018.delivery.model.jpa.user.Customer;
+import ftn.sf012018.delivery.model.mappings.Order;
+import ftn.sf012018.delivery.model.mappings.user.Customer;
 import ftn.sf012018.delivery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

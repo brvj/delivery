@@ -2,8 +2,8 @@ package ftn.sf012018.delivery.converter;
 
 import ftn.sf012018.delivery.converter.user.StoreConverter;
 import ftn.sf012018.delivery.model.dto.ActionDTO;
-import ftn.sf012018.delivery.model.jpa.Action;
-import ftn.sf012018.delivery.model.jpa.Article;
+import ftn.sf012018.delivery.model.mappings.Action;
+import ftn.sf012018.delivery.model.mappings.Article;
 import ftn.sf012018.delivery.repository.ArticleRepository;
 import ftn.sf012018.delivery.repository.user.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;

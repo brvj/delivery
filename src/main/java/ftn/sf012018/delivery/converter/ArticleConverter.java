@@ -2,9 +2,9 @@ package ftn.sf012018.delivery.converter;
 
 import ftn.sf012018.delivery.converter.user.StoreConverter;
 import ftn.sf012018.delivery.model.dto.ArticleDTO;
-import ftn.sf012018.delivery.model.jpa.Action;
-import ftn.sf012018.delivery.model.jpa.Article;
-import ftn.sf012018.delivery.model.jpa.Item;
+import ftn.sf012018.delivery.model.mappings.Action;
+import ftn.sf012018.delivery.model.mappings.Article;
+import ftn.sf012018.delivery.model.mappings.Item;
 import ftn.sf012018.delivery.repository.ActionRepository;
 import ftn.sf012018.delivery.repository.ItemRepository;
 import ftn.sf012018.delivery.repository.user.StoreRepository;

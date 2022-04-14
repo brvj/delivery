@@ -1,9 +1,9 @@
 package ftn.sf012018.delivery.converter.user;
 
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
-import ftn.sf012018.delivery.model.jpa.Action;
-import ftn.sf012018.delivery.model.jpa.Article;
-import ftn.sf012018.delivery.model.jpa.user.Store;
+import ftn.sf012018.delivery.model.mappings.Action;
+import ftn.sf012018.delivery.model.mappings.Article;
+import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.repository.ActionRepository;
 import ftn.sf012018.delivery.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package ftn.sf012018.delivery.converter;
 
 import ftn.sf012018.delivery.model.dto.ItemDTO;
-import ftn.sf012018.delivery.model.jpa.Item;
+import ftn.sf012018.delivery.model.mappings.Item;
 import ftn.sf012018.delivery.repository.ArticleRepository;
 import ftn.sf012018.delivery.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,8 +2,8 @@ package ftn.sf012018.delivery.converter;
 
 import ftn.sf012018.delivery.converter.user.CustomerConverter;
 import ftn.sf012018.delivery.model.dto.OrderDTO;
-import ftn.sf012018.delivery.model.jpa.Item;
-import ftn.sf012018.delivery.model.jpa.Order;
+import ftn.sf012018.delivery.model.mappings.Item;
+import ftn.sf012018.delivery.model.mappings.Order;
 import ftn.sf012018.delivery.repository.ItemRepository;
 import ftn.sf012018.delivery.repository.user.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

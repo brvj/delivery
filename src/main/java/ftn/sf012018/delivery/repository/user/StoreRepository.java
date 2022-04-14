@@ -1,6 +1,6 @@
 package ftn.sf012018.delivery.repository.user;
 
-import ftn.sf012018.delivery.model.jpa.user.Store;
+import ftn.sf012018.delivery.model.mappings.user.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
