@@ -33,4 +33,9 @@ public class Article {
 
     @Field(type = FieldType.Object)
     private Store store;
+
+    @Field(type = FieldType.Keyword)
+    private String keywords;
+
+    private String filename;
 }
