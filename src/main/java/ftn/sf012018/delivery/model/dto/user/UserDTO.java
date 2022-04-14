@@ -1,14 +1,12 @@
 package ftn.sf012018.delivery.model.dto.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public abstract class UserDTO {
     private Long id;
     private String firstname;

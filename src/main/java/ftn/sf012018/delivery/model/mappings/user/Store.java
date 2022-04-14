@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @Document(indexName = "stores")
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class Store extends User{
@@ -27,4 +26,14 @@ public class Store extends User{
 
     @Field(type = FieldType.Keyword)
     private String name;
+
+    @Builder
+    public Store(Long id, String firstname, String lastname, String username, String password, boolean blocked,
+                    LocalDate workingSince, String email, String address, String name) {
+        super(id, firstname, lastname, username, password, blocked);
+        this.workingSince = workingSince;
+        this.email = email;
+        this.address = address;
+        this.name = name;
+    }
 }

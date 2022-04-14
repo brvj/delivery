@@ -8,7 +8,6 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @Document(indexName = "admins")
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class Admin extends User{
