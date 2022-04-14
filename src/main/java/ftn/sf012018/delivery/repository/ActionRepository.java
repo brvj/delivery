@@ -1,15 +1,9 @@
 package ftn.sf012018.delivery.repository;
 
 import ftn.sf012018.delivery.model.mappings.Action;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ActionRepository extends JpaRepository<Action, Long> {
-    @Query("select a from Action a where a.store.id = ?1")
-    Page<Action> findActionByStore_Id(Long id, Pageable pageable);
-
-    @Query("select a from Action a left join a.articles articles where articles.id = ?1")
-    Page<Action> findActionsByArticle_Id(Long id, Pageable pageable);
+@Repository
+public interface ActionRepository extends ElasticsearchRepository<Action, Long> {
 }

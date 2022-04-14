@@ -1,12 +1,9 @@
 package ftn.sf012018.delivery.repository.user;
 
 import ftn.sf012018.delivery.model.mappings.user.Customer;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    @Query("select c from Customer c left join c.orders orders where orders.id = ?1")
-    Optional<Customer> findCustomerByOrder_Id(Long id);
+@Repository
+public interface CustomerRepository extends ElasticsearchRepository<Customer, Long> {
 }
