@@ -17,7 +17,6 @@ public class ActionMapper {
     @Autowired
     ArticleMapper articleMapper;
 
-
     public ActionDTO mapToDTO(Action source){
         if(source == null) return null;
 

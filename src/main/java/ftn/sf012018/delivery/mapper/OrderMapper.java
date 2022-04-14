@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class OrderConverter {
+public class OrderMapper {
     @Autowired
     CustomerMapper customerMapper;
 
