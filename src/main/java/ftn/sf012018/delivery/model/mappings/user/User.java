@@ -11,7 +11,6 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @Document(indexName = "users")
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public abstract class User {

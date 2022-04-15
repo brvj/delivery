@@ -26,7 +26,7 @@ public class AdminMapper {
     public Admin mapModel(AdminDTO source){
         if(source == null) return null;
 
-        return (Admin) Admin.builder()
+        return Admin.builder()
                 .id(source.getId())
                 .firstname(source.getFirstname())
                 .lastname(source.getLastname())

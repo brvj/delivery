@@ -6,7 +6,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public abstract class UserDTO {
     private Long id;
     private String firstname;

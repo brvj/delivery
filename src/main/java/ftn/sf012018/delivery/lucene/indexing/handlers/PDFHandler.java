@@ -20,7 +20,7 @@ public class PDFHandler extends DocumentHandler {
 	public Article getIndexUnit(File file) {
 		Article retVal = new Article();
 		try {
-			PDFParser parser = new PDFParser((RandomAccessRead) new RandomAccessFile(file, "r"));
+			PDFParser parser = new PDFParser(new org.apache.pdfbox.io.RandomAccessFile(file, "r"));
 			parser.parse();
 			String text = getDescription(parser);
 			retVal.setDescription(text);
