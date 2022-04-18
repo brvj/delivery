@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @Builder
 public class OrderDTO {
-    private Long id;
+    private String id;
     private LocalDate orderDate;
     private boolean delivered;
     private int rating;

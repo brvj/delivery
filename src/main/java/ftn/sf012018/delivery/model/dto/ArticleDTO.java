@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @Builder
 public class ArticleDTO {
-    private Long id;
+    private String id;
     private String name;
     private MultipartFile description;
     private double price;

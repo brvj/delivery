@@ -20,7 +20,7 @@ import java.util.Set;
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class Action {
     @Id
-    private Long id;
+    private String id;
 
     @Field(type = FieldType.Integer)
     private int percentage;

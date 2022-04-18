@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 public class ItemDTO {
-    private Long id;
+    private String id;
     private int quantity;
     private ArticleDTO articleDTO;
 }

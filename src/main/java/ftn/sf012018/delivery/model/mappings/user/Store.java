@@ -28,7 +28,7 @@ public class Store extends User{
     private String name;
 
     @Builder
-    public Store(Long id, String firstname, String lastname, String username, String password, boolean blocked,
+    public Store(String id, String firstname, String lastname, String username, String password, boolean blocked,
                     LocalDate workingSince, String email, String address, String name) {
         super(id, firstname, lastname, username, password, blocked);
         this.workingSince = workingSince;

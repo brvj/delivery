@@ -20,7 +20,7 @@ import java.util.Set;
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class Order {
     @Id
-    private Long id;
+    private String id;
 
     @Field(type = FieldType.Date)
     private LocalDate orderDate;

@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public abstract class User {
     @Id
-    private Long id;
+    private String id;
 
     @Field(type = FieldType.Keyword)
     private String firstname;

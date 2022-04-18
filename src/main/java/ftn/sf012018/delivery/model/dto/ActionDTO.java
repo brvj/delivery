@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @Builder
 public class ActionDTO {
-    private Long id;
+    private String id;
     private int percentage;
     private LocalDate startDate;
     private LocalDate endDate;

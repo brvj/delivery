@@ -14,7 +14,7 @@ public class StoreDTO extends UserDTO{
     private String name;
 
     @Builder
-    public StoreDTO(Long id, String firstname, String lastname, String username, String password, boolean blocked,
+    public StoreDTO(String id, String firstname, String lastname, String username, String password, boolean blocked,
                          LocalDate workingSince, String email, String address, String name) {
         super(id, firstname, lastname, username, password, blocked);
         this.workingSince = workingSince;

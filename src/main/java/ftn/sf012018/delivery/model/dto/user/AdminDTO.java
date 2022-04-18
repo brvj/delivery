@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class AdminDTO extends UserDTO{
     @Builder
-    public AdminDTO(Long id, String firstname, String lastname, String username, String password, boolean blocked) {
+    public AdminDTO(String id, String firstname, String lastname, String username, String password, boolean blocked) {
         super(id, firstname, lastname, username, password, blocked);
     }
 }

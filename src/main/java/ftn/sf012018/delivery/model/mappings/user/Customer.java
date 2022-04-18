@@ -18,7 +18,7 @@ public class Customer extends User{
     private String address;
 
     @Builder
-    public Customer(Long id, String firstname, String lastname, String username, String password, boolean blocked,
+    public Customer(String id, String firstname, String lastname, String username, String password, boolean blocked,
                        String address){
         super(id, firstname, lastname, username, password, blocked);
         this.address = address;

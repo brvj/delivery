@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 public abstract class UserDTO {
-    private Long id;
+    private String id;
     private String firstname;
     private String lastname;
     private String username;

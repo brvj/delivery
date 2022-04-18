@@ -17,7 +17,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class Item {
     @Id
-    private Long id;
+    private String id;
 
     @Field(type = FieldType.Integer)
     private int quantity;

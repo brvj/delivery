@@ -5,7 +5,7 @@ import ftn.sf012018.delivery.model.mappings.user.Admin;
 
 public interface IAdminService {
 
-    AdminDTO index(Admin admin);
+    void index(AdminDTO admin);
 
     AdminDTO findByUsernameAndPassword(String userName, String password);
 }

@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Setting(settingPath = "/analyzers/serbianAnalyzer.json")
 public class Admin extends User{
     @Builder
-    public Admin(Long id, String firstname, String lastname, String username, String password, boolean blocked) {
+    public Admin(String id, String firstname, String lastname, String username, String password, boolean blocked) {
         super(id, firstname, lastname, username, password, blocked);
     }
 }

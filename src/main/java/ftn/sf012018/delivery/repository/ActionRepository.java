@@ -5,5 +5,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ActionRepository extends ElasticsearchRepository<Action, Long> {
+public interface ActionRepository extends ElasticsearchRepository<Action, String> {
 }
