@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerRepository extends ElasticsearchRepository<Customer, String> {
-    Customer findByUsernameAndPassword(String userName, String password);
+    Customer findByUsernameAndPassword(String username, String password);
 
     Page<Customer> findByBlocked(Boolean blocked, Pageable pageable);
 }

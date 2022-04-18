@@ -7,5 +7,5 @@ public interface IAdminService {
 
     void index(AdminDTO admin);
 
-    AdminDTO findByUsernameAndPassword(String userName, String password);
+    AdminDTO findByUsernameAndPassword(String username, String password);
 }

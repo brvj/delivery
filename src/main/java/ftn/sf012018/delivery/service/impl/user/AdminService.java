@@ -21,10 +21,10 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public AdminDTO findByUsernameAndPassword(String userName, String password) {
-        if(userName == "" || password == "")
+    public AdminDTO findByUsernameAndPassword(String username, String password) {
+        if(username == "" || password == "")
             return null;
 
-        return adminMapper.mapToDTO(adminRepository.findByUsernameAndPassword(userName, password));
+        return adminMapper.mapToDTO(adminRepository.findByUsernameAndPassword(username, password));
     }
 }

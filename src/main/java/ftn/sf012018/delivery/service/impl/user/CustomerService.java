@@ -83,10 +83,10 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO findByUsernameAndPassword(String userName, String password) {
-        if(userName == "" || password == "")
+    public CustomerDTO findByUsernameAndPassword(String username, String password) {
+        if(username == "" || password == "")
             return null;
 
-        return customerMapper.mapToDTO(customerRepository.findByUsernameAndPassword(userName, password));
+        return customerMapper.mapToDTO(customerRepository.findByUsernameAndPassword(username, password));
     }
 }
