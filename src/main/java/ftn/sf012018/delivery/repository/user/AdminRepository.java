@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRepository extends ElasticsearchRepository<Admin, Long> {
+    Admin findByUsernameAndPassword(String userName, String password);
 }
