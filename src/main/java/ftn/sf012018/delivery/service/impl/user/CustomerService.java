@@ -38,7 +38,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public void update(CustomerDTO customerNew) {
         Query searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "id", customerNew.getId()))
+                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", customerNew.getId()))
                 .build();
 
         SearchHits<Customer> customers =
@@ -47,7 +47,6 @@ public class CustomerService implements ICustomerService {
 
         customer.setFirstname(customerNew.getFirstname());
         customer.setLastname(customerNew.getLastname());
-        customer.setPassword(customerNew.getPassword());
         customer.setAddress(customerNew.getAddress());
 
         index(customerMapper.mapToDTO(customer));
@@ -56,7 +55,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public void block(String id) {
         Query searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "id", id))
+                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", id))
                 .build();
 
         SearchHits<Customer> customers =
@@ -88,5 +87,10 @@ public class CustomerService implements ICustomerService {
             return null;
 
         return customerMapper.mapToDTO(customerRepository.findByUsernameAndPassword(username, password));
+    }
+
+    @Override
+    public Customer findByUsername(String username){
+        return customerRepository.findByUsername(username);
     }
 }

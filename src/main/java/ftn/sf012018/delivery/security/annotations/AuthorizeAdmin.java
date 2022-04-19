@@ -6,6 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasAuthority('ADMIN', 'CUSTOMER')")
-public @interface AuthorizeAdminAndCustomer {
+@PreAuthorize("hasAuthority('ADMIN')")
+public @interface AuthorizeAdmin {
 }

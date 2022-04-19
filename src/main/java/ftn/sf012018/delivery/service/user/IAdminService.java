@@ -8,4 +8,6 @@ public interface IAdminService {
     void index(AdminDTO admin);
 
     AdminDTO findByUsernameAndPassword(String username, String password);
+
+    Admin findByUsername(String username);
 }

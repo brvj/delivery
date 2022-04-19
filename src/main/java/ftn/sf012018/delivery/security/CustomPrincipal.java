@@ -52,7 +52,7 @@ public class CustomPrincipal implements UserDetails, CredentialsContainer {
     }
 
     public CustomPrincipal(String id, String username, String password, String firstname, String lastname, String ownerId,
-                           Collection<? extends GrantedAuthority> authorities, String password1){
+                           Collection<? extends GrantedAuthority> authorities){
         this(id, username, password, firstname, lastname, ownerId, true, true,
                 true, true, authorities);
     }
@@ -110,6 +110,8 @@ public class CustomPrincipal implements UserDetails, CredentialsContainer {
     public String getFirstname() { return this.firstname; }
 
     public String getLastname() { return this.lastname; }
+
+    public String getOwnerId() { return this.ownerId; }
 
     @Override
     public boolean isAccountNonExpired() { return this.accountNonExpired; }

@@ -37,7 +37,7 @@ public class StoreService implements IStoreService {
     @Override
     public void update(StoreDTO storeNew) {
         Query searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "id", storeNew.getId()))
+                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", storeNew.getId()))
                 .build();
 
         SearchHits<Store> stores =
@@ -46,7 +46,6 @@ public class StoreService implements IStoreService {
 
         store.setFirstname(storeNew.getFirstname());
         store.setLastname(storeNew.getLastname());
-        store.setPassword(storeNew.getPassword());
         store.setAddress(storeNew.getAddress());
         store.setWorkingSince(storeNew.getWorkingSince());
         store.setEmail(store.getEmail());
@@ -66,5 +65,10 @@ public class StoreService implements IStoreService {
     @Override
     public Set<StoreDTO> getAll(Pageable pageable) {
         return storeMapper.mapToDTO(storeRepository.findAll(pageable).toSet());
+    }
+
+    @Override
+    public Store findByUsername(String username){
+        return storeRepository.findByUsername(username);
     }
 }

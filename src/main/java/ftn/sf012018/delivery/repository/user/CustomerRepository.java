@@ -11,4 +11,6 @@ public interface CustomerRepository extends ElasticsearchRepository<Customer, St
     Customer findByUsernameAndPassword(String username, String password);
 
     Page<Customer> findByBlocked(Boolean blocked, Pageable pageable);
+
+    Customer findByUsername(String username);
 }
