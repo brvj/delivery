@@ -3,7 +3,6 @@ package ftn.sf012018.delivery.service.impl.user;
 import ftn.sf012018.delivery.lucene.search.QueryBuilderCustom;
 import ftn.sf012018.delivery.mapper.user.StoreMapper;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
-import ftn.sf012018.delivery.model.mappings.user.Customer;
 import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.repository.user.StoreRepository;
 import ftn.sf012018.delivery.service.user.IStoreService;
@@ -58,7 +57,7 @@ public class StoreService implements IStoreService {
 
     @Override
     public StoreDTO findByUsernameAndPassword(String username, String password) {
-        if(username == "" || password == "")
+        if(username.equals("") || password.equals(""))
             return null;
 
         return storeMapper.mapToDTO(storeRepository.findByUsernameAndPassword(username, password));
