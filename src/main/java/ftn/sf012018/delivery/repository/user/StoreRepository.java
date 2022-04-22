@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface StoreRepository extends ElasticsearchRepository<Store, String> {
     Store findByUsernameAndPassword(String username, String password);
 
-    Store findByUsername(String username);
+    Store findByUsernameAndBlocked(String username, boolean blocked);
 }

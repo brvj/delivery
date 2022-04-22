@@ -9,5 +9,5 @@ public interface IAdminService {
 
     AdminDTO findByUsernameAndPassword(String username, String password);
 
-    Admin findByUsername(String username);
+    Admin findByUsernameAndBlocked(String username);
 }

@@ -76,10 +76,9 @@ public class ArticleService implements IArticleService {
     }
 
     @Override
-    public void update(ArticleDTO articleDTO, ArticleDTO articleDTOOld) throws IOException {
-        String articleName = articleDTOOld.getName();
+    public void update(ArticleDTO articleDTO) throws IOException {
         Query searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "articles", articleName))
+                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", articleDTO.getId()))
                 .build();
 
         SearchHits<Article> articles =
@@ -90,12 +89,11 @@ public class ArticleService implements IArticleService {
     }
 
     @Override
-    public Set<ArticleDTO> getByStore(StoreDTO storeDTO) {
+    public Set<ArticleDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
         Page<Article> articles = articleRepository.findByStore(storeMapper.mapModel(storeDTO), Pageable.unpaged());
 
         return articleMapper.mapToDTO(articles.toSet());
     }
-
 
     @Override
     public Set<ArticleDTO> getByStoreAndCustomQuery(ArticleQueryOptions articleQueryOptions) {
@@ -209,5 +207,4 @@ public class ArticleService implements IArticleService {
 
         return elasticsearchRestTemplate.search(searchQuery, Article.class,  IndexCoordinates.of("articles"));
     }
-
 }

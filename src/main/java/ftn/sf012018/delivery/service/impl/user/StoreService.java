@@ -68,7 +68,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public Store findByUsername(String username){
-        return storeRepository.findByUsername(username);
+    public Store findByUsernameAndBlocked(String username){
+        return storeRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
 }

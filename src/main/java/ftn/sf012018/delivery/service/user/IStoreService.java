@@ -16,5 +16,5 @@ public interface IStoreService {
 
     Set<StoreDTO> getAll(Pageable pageable);
 
-    Store findByUsername(String username);
+    Store findByUsernameAndBlocked(String username);
 }

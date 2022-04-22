@@ -20,5 +20,5 @@ public interface ICustomerService {
 
     CustomerDTO findByUsernameAndPassword(String userName, String password);
 
-    Customer findByUsername(String username);
+    Customer findByUsernameAndBlocked(String username);
 }

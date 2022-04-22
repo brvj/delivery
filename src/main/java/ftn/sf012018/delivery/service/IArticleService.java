@@ -6,6 +6,7 @@ import ftn.sf012018.delivery.model.mappings.Article;
 import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,11 +18,11 @@ public interface IArticleService {
 
     void delete(ArticleDTO articleDTO);
 
-    void update(ArticleDTO articleDTO, ArticleDTO articleDTOOld) throws IOException;
+    void update(ArticleDTO articleDTO) throws IOException;
 
     void reindex();
 
-    Set<ArticleDTO> getByStore(StoreDTO storeDTO);
+    Set<ArticleDTO> getByStore(StoreDTO storeDTO, Pageable pageable);
 
     Set<ArticleDTO> getByStoreAndCustomQuery(ArticleQueryOptions articleQueryOptions);
 

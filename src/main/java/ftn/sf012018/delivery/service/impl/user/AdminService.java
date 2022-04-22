@@ -23,14 +23,14 @@ public class AdminService implements IAdminService {
 
     @Override
     public AdminDTO findByUsernameAndPassword(String username, String password) {
-        if(username == "" || password == "")
+        if(username.equals("") || password.equals(""))
             return null;
 
         return adminMapper.mapToDTO(adminRepository.findByUsernameAndPassword(username, password));
     }
 
     @Override
-    public Admin findByUsername(String username) {
-        return adminRepository.findByUsername(username);
+    public Admin findByUsernameAndBlocked(String username) {
+        return adminRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
 }
