@@ -14,11 +14,11 @@ public interface ICustomerService {
 
     void block(String id);
 
-    Set<CustomerDTO> findAllBlockedCustomers(boolean blocked, Pageable pageable);
+    Set<CustomerDTO> getAllBlockedCustomers(boolean blocked, Pageable pageable);
 
-    Set<CustomerDTO> findAllUnblockedCustomers(boolean blocked, Pageable pageable);
+    Set<CustomerDTO> getAllUnblockedCustomers(boolean blocked, Pageable pageable);
 
-    CustomerDTO findByUsernameAndPassword(String userName, String password);
+    CustomerDTO getByUsernameAndPassword(String userName, String password);
 
-    Customer findByUsernameAndBlocked(String username);
+    Customer getByUsernameAndBlocked(String username);
 }

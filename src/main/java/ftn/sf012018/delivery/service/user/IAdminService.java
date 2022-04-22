@@ -7,7 +7,7 @@ public interface IAdminService {
 
     void index(AdminDTO admin);
 
-    AdminDTO findByUsernameAndPassword(String username, String password);
+    AdminDTO getByUsernameAndPassword(String username, String password);
 
-    Admin findByUsernameAndBlocked(String username);
+    Admin getByUsernameAndBlocked(String username);
 }

@@ -55,7 +55,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public StoreDTO findByUsernameAndPassword(String username, String password) {
+    public StoreDTO getByUsernameAndPassword(String username, String password) {
         if(username.equals("") || password.equals(""))
             return null;
 
@@ -68,7 +68,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
-    public Store findByUsernameAndBlocked(String username){
+    public Store getByUsernameAndBlocked(String username){
         return storeRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
 }

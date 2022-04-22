@@ -68,21 +68,21 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Set<CustomerDTO> findAllBlockedCustomers(boolean blocked, Pageable pageable) {
+    public Set<CustomerDTO> getAllBlockedCustomers(boolean blocked, Pageable pageable) {
         Page<Customer> customers = customerRepository.findByBlocked(blocked, pageable);
 
         return customers.map(customer -> customerMapper.mapToDTO(customer)).toSet();
     }
 
     @Override
-    public Set<CustomerDTO> findAllUnblockedCustomers(boolean blocked, Pageable pageable) {
+    public Set<CustomerDTO> getAllUnblockedCustomers(boolean blocked, Pageable pageable) {
         Page<Customer> customers = customerRepository.findByBlocked(blocked, pageable);
 
         return customers.map(customer -> customerMapper.mapToDTO(customer)).toSet();
     }
 
     @Override
-    public CustomerDTO findByUsernameAndPassword(String username, String password) {
+    public CustomerDTO getByUsernameAndPassword(String username, String password) {
         if(username.equals("") || password.equals(""))
             return null;
 
@@ -90,7 +90,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Customer findByUsernameAndBlocked(String username){
+    public Customer getByUsernameAndBlocked(String username){
         return customerRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
 }

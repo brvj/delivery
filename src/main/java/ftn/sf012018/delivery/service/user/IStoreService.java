@@ -12,9 +12,9 @@ public interface IStoreService {
 
     void update(StoreDTO storeNew);
 
-    StoreDTO findByUsernameAndPassword(String username, String password);
+    StoreDTO getByUsernameAndPassword(String username, String password);
 
     Set<StoreDTO> getAll(Pageable pageable);
 
-    Store findByUsernameAndBlocked(String username);
+    Store getByUsernameAndBlocked(String username);
 }

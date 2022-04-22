@@ -22,7 +22,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public AdminDTO findByUsernameAndPassword(String username, String password) {
+    public AdminDTO getByUsernameAndPassword(String username, String password) {
         if(username.equals("") || password.equals(""))
             return null;
 
@@ -30,7 +30,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public Admin findByUsernameAndBlocked(String username) {
+    public Admin getByUsernameAndBlocked(String username) {
         return adminRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
 }
