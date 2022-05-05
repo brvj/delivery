@@ -9,9 +9,10 @@ import ftn.sf012018.delivery.mapper.user.StoreMapper;
 import ftn.sf012018.delivery.model.dto.ArticleDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.Article;
-import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
 import ftn.sf012018.delivery.repository.ArticleRepository;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAny;
 import ftn.sf012018.delivery.service.IArticleService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -60,6 +61,7 @@ public class ArticleService implements IArticleService {
     private ArticleMapper articleMapper;
 
     @Override
+    @AuthorizeAdminOrStore
     public void index(Article article) {
         articleRepository.save(article);
     }
@@ -71,11 +73,13 @@ public class ArticleService implements IArticleService {
     }
 
     @Override
+    @AuthorizeAdminOrStore
     public void delete(ArticleDTO articleDTO) {
         articleRepository.delete(articleMapper.mapModel(articleDTO));
     }
 
     @Override
+    @AuthorizeAdminOrStore
     public void update(ArticleDTO articleDTO) throws IOException {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", articleDTO.getId()))
@@ -89,6 +93,7 @@ public class ArticleService implements IArticleService {
     }
 
     @Override
+    @AuthorizeAny
     public Set<ArticleDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
         Page<Article> articles = articleRepository.findByStore(storeMapper.mapModel(storeDTO), Pageable.unpaged());
 
@@ -96,6 +101,7 @@ public class ArticleService implements IArticleService {
     }
 
     @Override
+    @AuthorizeAny
     public Set<ArticleDTO> getByStoreAndCustomQuery(ArticleQueryOptions articleQueryOptions) {
         QueryBuilder nameQuery = SearchQueryGenerator.createMatchQueryBuilder(
                 new SimpleQueryElasticsearch("name", articleQueryOptions.getName()));
@@ -104,7 +110,7 @@ public class ArticleService implements IArticleService {
         QueryBuilder priceRangeQuery = SearchQueryGenerator.createRangeQueryBuilder(
                 new SimpleQueryElasticsearch("price", String.valueOf(articleQueryOptions.getPriceStart())+"-"+
                         String.valueOf(articleQueryOptions.getPriceEnd())));
-        //TO:DO implementirati za opseg ocene i obseg broja komentara artikla i po prodavcu
+        //TODO implementirati za opseg ocene i obseg broja komentara artikla i po prodavcu
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders
                 .boolQuery()
@@ -112,7 +118,7 @@ public class ArticleService implements IArticleService {
                 .should(descriptionQuery)
                 .should(priceRangeQuery);
 
-        return searchByBoolQuery(boolQueryBuilder).map( articles -> articleMapper.mapToDTO(articles.getContent())).toSet();
+        return searchByBoolQuery(boolQueryBuilder).map(articles -> articleMapper.mapToDTO(articles.getContent())).toSet();
     }
 
     @Override

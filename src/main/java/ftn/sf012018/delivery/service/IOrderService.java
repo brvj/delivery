@@ -11,4 +11,6 @@ public interface IOrderService {
     Set<OrderDTO> getByCustomQuery (OrderQueryOptions orderQueryOptions);
 
     void commentAndRate (OrderDTO orderDTO);
+
+    void setOrderDelivered (OrderDTO orderDTO);
 }

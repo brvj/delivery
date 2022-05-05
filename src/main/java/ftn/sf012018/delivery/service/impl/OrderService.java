@@ -8,6 +8,7 @@ import ftn.sf012018.delivery.model.dto.OrderDTO;
 import ftn.sf012018.delivery.model.mappings.Order;
 import ftn.sf012018.delivery.model.query.OrderQueryOptions;
 import ftn.sf012018.delivery.repository.OrderRepository;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
 import ftn.sf012018.delivery.service.IOrderService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -37,6 +38,7 @@ public class OrderService implements IOrderService {
     public void index(OrderDTO orderDTO) { orderRepository.save(orderMapper.mapModel(orderDTO)); }
 
     @Override
+    @AuthorizeAdminOrCustomer
     public Set<OrderDTO> getByCustomQuery(OrderQueryOptions orderQueryOptions) {
         QueryBuilder commentQuery = SearchQueryGenerator.createMatchQueryBuilder(
                 new SimpleQueryElasticsearch("_comment", orderQueryOptions.getComment()));
@@ -64,6 +66,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @AuthorizeAdminOrCustomer
     public void commentAndRate(OrderDTO orderDTO) {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", orderDTO.getId()))
@@ -74,8 +77,27 @@ public class OrderService implements IOrderService {
         Order order = orders.getSearchHit(0).getContent();
 
         if (order.getComment().equals("") && order.getRating() == 0){
-            index(orderDTO);
+            order.setComment(orderDTO.getComment());
+            order.setRating(orderDTO.getRating());
+
+            index(orderMapper.mapToDTO(order));
         }
+    }
+
+    @Override
+    @AuthorizeAdminOrCustomer
+    public void setOrderDelivered(OrderDTO orderDTO) {
+        Query searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", orderDTO.getId()))
+                .build();
+
+        SearchHits<Order> orders =
+                elasticsearchRestTemplate.search(searchQuery, Order.class, IndexCoordinates.of("orders"));
+        Order order = orders.getSearchHit(0).getContent();
+
+        order.setDelivered(true);
+
+        index(orderMapper.mapToDTO(order));
     }
 
     private SearchHits<Order> searchByBoolQuery(BoolQueryBuilder boolQueryBuilder) {

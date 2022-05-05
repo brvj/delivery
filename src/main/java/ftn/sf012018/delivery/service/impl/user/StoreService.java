@@ -5,6 +5,8 @@ import ftn.sf012018.delivery.mapper.user.StoreMapper;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.repository.user.StoreRepository;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
 import ftn.sf012018.delivery.service.user.IStoreService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @AuthorizeAdminOrStore
     public void update(StoreDTO storeNew) {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", storeNew.getId()))
@@ -63,6 +66,7 @@ public class StoreService implements IStoreService {
     }
 
     @Override
+    @AuthorizeAdminOrCustomer
     public Set<StoreDTO> getAll(Pageable pageable) {
         return storeMapper.mapToDTO(storeRepository.findAll(pageable).toSet());
     }

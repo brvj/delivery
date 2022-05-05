@@ -6,6 +6,8 @@ import ftn.sf012018.delivery.model.dto.ActionDTO;
 import ftn.sf012018.delivery.model.dto.ArticleDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.repository.ActionRepository;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAny;
 import ftn.sf012018.delivery.service.IActionService;
 import ftn.sf012018.delivery.util.DiscountCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service
@@ -27,6 +30,7 @@ public class ActionService implements IActionService {
     private StoreMapper storeMapper;
 
     @Override
+    @AuthorizeAdminOrStore
     public void index(ActionDTO actionDTO) {
         for (ArticleDTO article : actionDTO.getArticleDTOS()){
             article.setPrice(DiscountCalculator.calculate(article.getPrice(), actionDTO.getPercentage()));
@@ -36,7 +40,11 @@ public class ActionService implements IActionService {
     }
 
     @Override
+    @AuthorizeAny
     public Set<ActionDTO> getByStoreAndCurrentDate(StoreDTO storeDTO, Pageable pageable) {
-        return actionMapper.mapToDTO(actionRepository.findByStore(storeMapper.mapModel(storeDTO), pageable).toSet());
+        LocalDate currentDate = LocalDate.now();
+
+        return actionMapper.mapToDTO(actionRepository.findByStoreAndStartDateGreaterThanAndEndDateLessThan(
+                storeMapper.mapModel(storeDTO), currentDate, currentDate, pageable).toSet());
     }
 }

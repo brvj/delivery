@@ -5,6 +5,8 @@ import ftn.sf012018.delivery.mapper.user.CustomerMapper;
 import ftn.sf012018.delivery.model.dto.user.CustomerDTO;
 import ftn.sf012018.delivery.model.mappings.user.Customer;
 import ftn.sf012018.delivery.repository.user.CustomerRepository;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdmin;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
 import ftn.sf012018.delivery.service.user.ICustomerService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @AuthorizeAdminOrCustomer
     public void update(CustomerDTO customerNew) {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", customerNew.getId()))
@@ -53,6 +56,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @AuthorizeAdmin
     public void block(String id) {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", id))
@@ -68,6 +72,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @AuthorizeAdmin
     public Set<CustomerDTO> getAllBlockedCustomers(boolean blocked, Pageable pageable) {
         Page<Customer> customers = customerRepository.findByBlocked(blocked, pageable);
 
@@ -75,6 +80,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @AuthorizeAdmin
     public Set<CustomerDTO> getAllUnblockedCustomers(boolean blocked, Pageable pageable) {
         Page<Customer> customers = customerRepository.findByBlocked(blocked, pageable);
 

@@ -7,7 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+
 @Repository
 public interface ActionRepository extends ElasticsearchRepository<Action, String> {
-    Page<Action> findByStore(Store store, Pageable pageable); // TODO ubaciti da trazi i na osnovu trenutnog datuma!
+    Page<Action> findByStoreAndStartDateGreaterThanAndEndDateLessThan(Store store, LocalDate currentDate1,
+                                                                      LocalDate currentDate2, Pageable pageable);
 }

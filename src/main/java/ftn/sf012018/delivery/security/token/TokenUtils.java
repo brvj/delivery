@@ -65,7 +65,6 @@ public class TokenUtils {
     public String generateToken(UserDetails userDetails) {
         CustomPrincipal principal = (CustomPrincipal) userDetails;
         Map<String, Object> claims = new HashMap<String, Object>();
-        claims.put("sub", principal.getUsername());
         claims.put("id", principal.getId());
         claims.put("username", principal.getUsername());
         claims.put("firstname", principal.getFirstname());

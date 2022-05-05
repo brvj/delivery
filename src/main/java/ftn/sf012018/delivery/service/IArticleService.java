@@ -3,9 +3,7 @@ package ftn.sf012018.delivery.service;
 import ftn.sf012018.delivery.model.dto.ArticleDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.Article;
-import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.File;

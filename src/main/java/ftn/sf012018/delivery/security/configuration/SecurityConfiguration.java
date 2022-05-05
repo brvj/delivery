@@ -1,7 +1,6 @@
 package ftn.sf012018.delivery.security.configuration;
 
 import ftn.sf012018.delivery.security.token.AuthenticationTokenFilter;
-import ftn.sf012018.delivery.service.impl.user.DefaultUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
