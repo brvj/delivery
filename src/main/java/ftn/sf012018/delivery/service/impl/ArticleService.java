@@ -95,7 +95,7 @@ public class ArticleService implements IArticleService {
     @Override
     @AuthorizeAny
     public Set<ArticleDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
-        Page<Article> articles = articleRepository.findByStore(storeMapper.mapModel(storeDTO), Pageable.unpaged());
+        Page<Article> articles = articleRepository.findByStore(storeMapper.mapModel(storeDTO), pageable);
 
         return articleMapper.mapToDTO(articles.toSet());
     }

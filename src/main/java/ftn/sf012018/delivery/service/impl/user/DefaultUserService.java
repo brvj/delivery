@@ -175,8 +175,4 @@ public class DefaultUserService implements IDefaultUserService, UserDetailsServi
             customerService.index(customerMapper.mapToDTO(customer));
         }
     }
-
-    @AuthorizeAdminOrStore
-    public void test() {
-    }
 }

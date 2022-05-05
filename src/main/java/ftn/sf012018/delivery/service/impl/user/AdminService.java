@@ -31,7 +31,6 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    @AuthorizeAdmin
     public Admin getByUsernameAndBlocked(String username) {
         return adminRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
