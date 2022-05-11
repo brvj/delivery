@@ -65,9 +65,9 @@ public class CustomPrincipal implements UserDetails, CredentialsContainer {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { return this.authorities; }
 
-    private final SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority("ADMIN");
-    private final SimpleGrantedAuthority storeAuthority = new SimpleGrantedAuthority("STORE");
-    private final SimpleGrantedAuthority customerAuthority = new SimpleGrantedAuthority("CUSTOMER");
+    private final SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
+    private final SimpleGrantedAuthority storeAuthority = new SimpleGrantedAuthority("ROLE_STORE");
+    private final SimpleGrantedAuthority customerAuthority = new SimpleGrantedAuthority("ROLE_CUSTOMER");
 
     public boolean isAdmin() {
         if (this.authorities.contains(adminAuthority)) return true;

@@ -11,6 +11,7 @@ import ftn.sf012018.delivery.model.mappings.user.Admin;
 import ftn.sf012018.delivery.model.mappings.user.Customer;
 import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.security.CustomPrincipal;
+import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
 import ftn.sf012018.delivery.service.user.IDefaultUserService;
 import ftn.sf012018.delivery.util.SearchType;
@@ -72,13 +73,13 @@ public class DefaultUserService implements IDefaultUserService, UserDetailsServi
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         if (admin != null){
-            grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             isAdmin = true;
         } else if(store != null){
-            grantedAuthorities.add(new SimpleGrantedAuthority("STORE"));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_STORE"));
             isStore = true;
         } else if(customer != null){
-            grantedAuthorities.add(new SimpleGrantedAuthority("CUSTOMER"));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
             isCustomer = true;
         }
 
@@ -116,6 +117,7 @@ public class DefaultUserService implements IDefaultUserService, UserDetailsServi
     @Override
     public void indexStore(StoreDTO storeDTO) {
         storeDTO.setPassword(passwordEncoder.encode(storeDTO.getPassword()));
+        storeDTO.setBlocked(false);
 
         storeService.index(storeDTO);
     }
@@ -137,6 +139,7 @@ public class DefaultUserService implements IDefaultUserService, UserDetailsServi
     public void updateCustomer(CustomerDTO customerDTO) { customerService.update(customerDTO); }
 
     @Override
+    @AuthorizeAdminOrStore
     public void changeStorePassword(PasswordUpdateDTO passwordUpdateDTO) {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", passwordUpdateDTO.getUserId()))
@@ -158,6 +161,7 @@ public class DefaultUserService implements IDefaultUserService, UserDetailsServi
     }
 
     @Override
+    @AuthorizeAdminOrCustomer
     public void changeCustomerPassword(PasswordUpdateDTO passwordUpdateDTO) {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", passwordUpdateDTO.getUserId()))
