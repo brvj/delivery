@@ -123,6 +123,7 @@ public class DefaultUserService implements IDefaultUserService, UserDetailsServi
     @Override
     public void indexCustomer(CustomerDTO customerDTO) {
         customerDTO.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
+        customerDTO.setBlocked(false);
 
         customerService.index(customerDTO);
     }

@@ -41,7 +41,7 @@ public class ArticleController {
         }
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping
     public ResponseEntity<Set<ArticleDTO>> getAllByStore(@RequestBody StoreDTO storeDTO, Pageable pageable){
         try {
             return new ResponseEntity<>(articleService.getByStore(storeDTO, pageable), HttpStatus.OK);
