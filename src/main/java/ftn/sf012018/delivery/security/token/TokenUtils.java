@@ -65,6 +65,7 @@ public class TokenUtils {
     public String generateToken(UserDetails userDetails) {
         CustomPrincipal principal = (CustomPrincipal) userDetails;
         Map<String, Object> claims = new HashMap<String, Object>();
+        claims.put("sub", principal.getUsername());
         claims.put("id", principal.getId());
         claims.put("username", principal.getUsername());
         claims.put("firstname", principal.getFirstname());
@@ -72,17 +73,17 @@ public class TokenUtils {
 
         List<String> authorities = new ArrayList<>();
         if (principal.isAdmin()){
-            authorities.add("ADMIN");
+            authorities.add("ROLE_ADMIN");
             claims.put("adminId", principal.getAdminId());
         }
 
         if (principal.isStore()) {
-            authorities.add("STORE");
+            authorities.add("ROLE_STORE");
             claims.put("storeId", principal.getStoreId());
         }
 
         if (principal.isCustomer()) {
-            authorities.add("CUSTOMER");
+            authorities.add("ROLE_CUSTOMER");
             claims.put("customerId", principal.getCustomerId());
         }
 
