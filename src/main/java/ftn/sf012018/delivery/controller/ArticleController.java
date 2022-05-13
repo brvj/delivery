@@ -1,6 +1,7 @@
 package ftn.sf012018.delivery.controller;
 
-import ftn.sf012018.delivery.model.dto.ArticleDTO;
+import ftn.sf012018.delivery.model.dto.ArticleRequestDTO;
+import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
 import ftn.sf012018.delivery.service.impl.ArticleService;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Set;
@@ -20,7 +22,7 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PostMapping(path = "/index", consumes = { "multipart/form-data" })
-    public ResponseEntity<Void> multiUploadFileModel(@ModelAttribute ArticleDTO uploadModel) throws IOException {
+    public ResponseEntity<Void> multiUploadFileModel(@ModelAttribute ArticleRequestDTO uploadModel) throws IOException {
         try {
             articleService.indexUploadedFile(uploadModel);
 
@@ -31,7 +33,7 @@ public class ArticleController {
     }
 
     @DeleteMapping(consumes = { "multipart/form-data" })
-    public ResponseEntity<Void> deleteArticle(@RequestBody ArticleDTO articleDTO){
+    public ResponseEntity<Void> deleteArticle(@RequestBody ArticleRequestDTO articleDTO){
         try {
             articleService.delete(articleDTO);
 
@@ -42,7 +44,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<ArticleDTO>> getAllByStore(@RequestBody StoreDTO storeDTO, Pageable pageable){
+    public ResponseEntity<Set<ArticleResponseDTO>> getAllByStore(@RequestBody StoreDTO storeDTO, Pageable pageable){
         try {
             return new ResponseEntity<>(articleService.getByStore(storeDTO, pageable), HttpStatus.OK);
 
@@ -52,7 +54,7 @@ public class ArticleController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<Set<ArticleDTO>> getByCustomQuery(@RequestBody ArticleQueryOptions articleQueryOptions){
+    public ResponseEntity<Set<ArticleResponseDTO>> getByCustomQuery(@RequestBody ArticleQueryOptions articleQueryOptions){
         try {
             return new ResponseEntity<>(articleService.getByStoreAndCustomQuery(articleQueryOptions), HttpStatus.OK);
         } catch (Exception e){

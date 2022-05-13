@@ -6,11 +6,13 @@ import ftn.sf012018.delivery.lucene.search.SearchQueryGenerator;
 import ftn.sf012018.delivery.lucene.search.SimpleQueryElasticsearch;
 import ftn.sf012018.delivery.mapper.ArticleMapper;
 import ftn.sf012018.delivery.mapper.user.StoreMapper;
-import ftn.sf012018.delivery.model.dto.ArticleDTO;
+import ftn.sf012018.delivery.model.dto.ArticleRequestDTO;
+import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.Article;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
 import ftn.sf012018.delivery.repository.ArticleRepository;
+import ftn.sf012018.delivery.repository.user.StoreRepository;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAny;
 import ftn.sf012018.delivery.service.IArticleService;
@@ -32,6 +34,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,8 +52,13 @@ public class ArticleService implements IArticleService {
     @Value("${app.upload.dir:${user.home}}")
     public String uploadDir;
 
+    private static String folder = "";
+
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private StoreRepository storeRepository;
 
     @Autowired
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
@@ -74,13 +83,13 @@ public class ArticleService implements IArticleService {
 
     @Override
     @AuthorizeAdminOrStore
-    public void delete(ArticleDTO articleDTO) {
+    public void delete(ArticleRequestDTO articleDTO) throws IOException {
         articleRepository.delete(articleMapper.mapModel(articleDTO));
     }
 
     @Override
     @AuthorizeAdminOrStore
-    public void update(ArticleDTO articleDTO) throws IOException {
+    public void update(ArticleRequestDTO articleDTO) throws IOException {
         Query searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "_id", articleDTO.getId()))
                 .build();
@@ -94,7 +103,7 @@ public class ArticleService implements IArticleService {
 
     @Override
     @AuthorizeAny
-    public Set<ArticleDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
+    public Set<ArticleResponseDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
         Page<Article> articles = articleRepository.findByStore(storeMapper.mapModel(storeDTO), pageable);
 
         return articleMapper.mapToDTO(articles.toSet());
@@ -102,7 +111,7 @@ public class ArticleService implements IArticleService {
 
     @Override
     @AuthorizeAny
-    public Set<ArticleDTO> getByStoreAndCustomQuery(ArticleQueryOptions articleQueryOptions) {
+    public Set<ArticleResponseDTO> getByStoreAndCustomQuery(ArticleQueryOptions articleQueryOptions) {
         QueryBuilder nameQuery = SearchQueryGenerator.createMatchQueryBuilder(
                 new SimpleQueryElasticsearch("name", articleQueryOptions.getName()));
         QueryBuilder descriptionQuery = SearchQueryGenerator.createMatchQueryBuilder(
@@ -157,14 +166,15 @@ public class ArticleService implements IArticleService {
     }
 
     @Override
-    public void indexUploadedFile(ArticleDTO articleDTO) throws IOException {
+    public void indexUploadedFile(ArticleRequestDTO articleDTO) throws IOException {
         String fileName = saveUploadedFileInFolder(articleDTO.getDescription());
+        String imagePath = saveUploadedImageInFolder(articleDTO.getImage());
         if(fileName != null){
             Article articleIndexUnit = getHandler(fileName).getIndexUnit(new File(fileName));
             articleIndexUnit.setName(articleDTO.getName());
-            articleIndexUnit.setImage(articleDTO.getImage());
+            articleIndexUnit.setImagePath(imagePath);
             articleIndexUnit.setPrice(articleDTO.getPrice());
-            articleIndexUnit.setStore(storeMapper.mapModel(articleDTO.getStoreDTO()));
+            articleIndexUnit.setStore(storeRepository.findById(articleDTO.getStoreDTO().getId()).get());
 
             index(articleIndexUnit);
         }
@@ -197,10 +207,29 @@ public class ArticleService implements IArticleService {
         String retVal = null;
         if (!file.isEmpty()) {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(getResourceFilePath(dataFilesPath).getAbsolutePath() + File.separator + file.getOriginalFilename());
+            Path path = Paths.get("C:\\Users\\Boris\\Desktop\\REPO\\delivery\\src\\main\\resources\\files" + File.separator + file.getOriginalFilename());
             Files.write(path, bytes);
             Path filepath = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
             Files.write(filepath, bytes);
+            retVal = path.toString();
+        }
+        return retVal;
+    }
+
+    @PostConstruct
+    private void imagesPath() {
+        String path = "src/main/resources/images/";
+
+        File file = new File(path);
+        folder = file.getAbsolutePath();
+    }
+
+    private String saveUploadedImageInFolder(MultipartFile file) throws IOException {
+        String retVal = null;
+        if (!file.isEmpty()) {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(folder + File.separator + file.getOriginalFilename());
+            Files.write(path, bytes);
             retVal = path.toString();
         }
         return retVal;

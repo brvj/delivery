@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,11 +18,12 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
+    @GetMapping(produces = "application/json")
     public ResponseEntity<Set<StoreDTO>> getAll(Pageable pageable){
-        try {
-            return new ResponseEntity<>(storeService.getAll(pageable), HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        Set<StoreDTO> stores = storeService.getAll(pageable);
+
+        if (!stores.isEmpty()) return new ResponseEntity<>(stores, HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

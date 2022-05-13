@@ -1,7 +1,9 @@
 package ftn.sf012018.delivery.mapper;
 
+import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.ItemDTO;
 import ftn.sf012018.delivery.model.mappings.Item;
+import ftn.sf012018.delivery.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,9 @@ import java.util.Set;
 public class ItemMapper {
     @Autowired
     ArticleMapper articleMapper;
+
+    @Autowired
+    ArticleRepository articleRepository;
 
     public ItemDTO mapToDTO(Item source){
         if(source == null) return null;
@@ -26,10 +31,12 @@ public class ItemMapper {
     public Item mapModel(ItemDTO source){
         if(source == null) return null;
 
+        ArticleResponseDTO article = articleMapper.mapToDTO(articleRepository.findById(source.getArticleDTO().getId()).get());
+
         return Item.builder()
                 .id(source.getId())
                 .quantity(source.getQuantity())
-                .article(articleMapper.mapModel(source.getArticleDTO()))
+                .article(articleMapper.mapModel(article))
                 .build();
     }
 

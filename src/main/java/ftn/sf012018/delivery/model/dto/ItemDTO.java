@@ -10,5 +10,5 @@ import lombok.*;
 public class ItemDTO {
     private String id;
     private int quantity;
-    private ArticleDTO articleDTO;
+    private ArticleResponseDTO articleDTO;
 }

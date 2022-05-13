@@ -3,7 +3,8 @@ package ftn.sf012018.delivery.service.impl;
 import ftn.sf012018.delivery.mapper.ActionMapper;
 import ftn.sf012018.delivery.mapper.user.StoreMapper;
 import ftn.sf012018.delivery.model.dto.ActionDTO;
-import ftn.sf012018.delivery.model.dto.ArticleDTO;
+import ftn.sf012018.delivery.model.dto.ArticleRequestDTO;
+import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.repository.ActionRepository;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -31,8 +33,8 @@ public class ActionService implements IActionService {
 
     @Override
     @AuthorizeAdminOrStore
-    public void index(ActionDTO actionDTO) {
-        for (ArticleDTO article : actionDTO.getArticleDTOS()){
+    public void index(ActionDTO actionDTO) throws IOException {
+        for (ArticleResponseDTO article : actionDTO.getArticleDTOS()){
             article.setPrice(DiscountCalculator.calculate(article.getPrice(), actionDTO.getPercentage()));
         }
 

@@ -18,5 +18,5 @@ public class ActionDTO {
     private LocalDate endDate;
     private String text;
     private StoreDTO storeDTO;
-    private Set<ArticleDTO> articleDTOS;
+    private Set<ArticleResponseDTO> articleDTOS;
 }

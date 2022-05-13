@@ -2,18 +2,17 @@ package ftn.sf012018.delivery.model.dto;
 
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class ArticleDTO {
+public class ArticleResponseDTO {
     private String id;
     private String name;
-    private MultipartFile description;
+    private String description;
     private double price;
-    private byte image;
+    private String image;
     private StoreDTO storeDTO;
 }

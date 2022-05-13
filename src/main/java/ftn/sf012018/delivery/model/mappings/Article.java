@@ -28,8 +28,8 @@ public class Article {
     @Field(type = FieldType.Double)
     private double price;
 
-    @Field(type = FieldType.Byte)
-    private byte image;
+    @Field(type = FieldType.Text)
+    private String imagePath;
 
     @Field(type = FieldType.Object)
     private Store store;
