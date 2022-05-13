@@ -32,8 +32,19 @@ public class ArticleController {
         }
     }
 
+    @PutMapping(path = "/index", consumes = { "multipart/form-data" })
+    public ResponseEntity<Void> update(@ModelAttribute ArticleRequestDTO uploadModel) throws IOException {
+        try {
+            articleService.update(uploadModel);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping(consumes = { "multipart/form-data" })
-    public ResponseEntity<Void> deleteArticle(@RequestBody ArticleRequestDTO articleDTO){
+    public ResponseEntity<Void> deleteArticle(@ModelAttribute ArticleRequestDTO articleDTO){
         try {
             articleService.delete(articleDTO);
 

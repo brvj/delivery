@@ -84,7 +84,7 @@ public class ArticleService implements IArticleService {
     @Override
     @AuthorizeAdminOrStore
     public void delete(ArticleRequestDTO articleDTO) throws IOException {
-        articleRepository.delete(articleMapper.mapModel(articleDTO));
+        articleRepository.deleteById(articleDTO.getId());
     }
 
     @Override
