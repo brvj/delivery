@@ -64,7 +64,7 @@ public class ArticleController {
         }
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(value = "/query", produces = "application/json")
     public ResponseEntity<Set<ArticleResponseDTO>> getByCustomQuery(@RequestBody ArticleQueryOptions articleQueryOptions){
         try {
             return new ResponseEntity<>(articleService.getByStoreAndCustomQuery(articleQueryOptions), HttpStatus.OK);
