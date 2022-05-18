@@ -50,44 +50,44 @@ public class DefaultUserController {
     }
 
     @PutMapping(value = "/change-customer-password", consumes = "application/json")
-    public ResponseEntity<Void> changeCustomerPassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO){
+    public ResponseEntity<String> changeCustomerPassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO){
         try {
             defaultUserService.changeCustomerPassword(passwordUpdateDTO);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(passwordUpdateDTO.getUserId(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping(value = "/change-store-password", consumes = "application/json")
-    public ResponseEntity<Void> changeStorePassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO){
+    public ResponseEntity<String> changeStorePassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO){
         try {
             defaultUserService.changeStorePassword(passwordUpdateDTO);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(passwordUpdateDTO.getUserId(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping(value = "/update-customer", consumes = "application/json")
-    public ResponseEntity<Void> updateCustomer(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<String> updateCustomer(@RequestBody CustomerDTO customerDTO){
         try {
             defaultUserService.updateCustomer(customerDTO);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(customerDTO.getId(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping(value = "/update-store", consumes = "application/json")
-    public ResponseEntity<Void> updateStore(@RequestBody StoreDTO storeDTO){
+    public ResponseEntity<String> updateStore(@RequestBody StoreDTO storeDTO){
         try {
             defaultUserService.updateStore(storeDTO);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(storeDTO.getId(), HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

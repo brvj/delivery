@@ -37,22 +37,22 @@ public class OrderController {
     }
 
     @PutMapping(value = "/comment", consumes = "application/json")
-    public ResponseEntity<Void> comment (@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<String> comment (@RequestBody OrderDTO orderDTO){
         try {
             orderService.commentAndRate(orderDTO);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(orderDTO.getId(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping(value = "/set-delivery-status", consumes = "application/json")
-    public ResponseEntity<Void> setDeliveryStatus(@RequestBody OrderDTO orderDTO){
+    public ResponseEntity<String> setDeliveryStatus(@RequestBody OrderDTO orderDTO){
         try {
             orderService.setOrderDelivered(orderDTO);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(orderDTO.getId(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

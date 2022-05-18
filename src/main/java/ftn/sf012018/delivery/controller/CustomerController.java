@@ -20,11 +20,11 @@ public class CustomerController {
     private StoreService storeService;
 
     @PutMapping(value = "/block", consumes = "application/json")
-    public ResponseEntity<Void> block(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<String> block(@RequestBody CustomerDTO customerDTO){
         try {
             customerService.block(customerDTO.getId());
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(customerDTO.getId(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
