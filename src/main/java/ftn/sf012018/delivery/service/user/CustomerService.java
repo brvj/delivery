@@ -1,13 +1,13 @@
-package ftn.sf012018.delivery.service.impl.user;
+package ftn.sf012018.delivery.service.user;
 
 import ftn.sf012018.delivery.lucene.search.QueryBuilderCustom;
 import ftn.sf012018.delivery.mapper.user.CustomerMapper;
 import ftn.sf012018.delivery.model.dto.user.CustomerDTO;
 import ftn.sf012018.delivery.model.mappings.user.Customer;
-import ftn.sf012018.delivery.repository.user.CustomerRepository;
+import ftn.sf012018.delivery.contract.repository.user.CustomerRepository;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdmin;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
-import ftn.sf012018.delivery.service.user.ICustomerService;
+import ftn.sf012018.delivery.contract.service.user.ICustomerService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.function.Function;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -73,18 +73,28 @@ public class CustomerService implements ICustomerService {
 
     @Override
     @AuthorizeAdmin
-    public Set<CustomerDTO> getAllBlockedCustomers(boolean blocked, Pageable pageable) {
+    public Page<CustomerDTO> getAllBlockedCustomers(boolean blocked, Pageable pageable) {
         Page<Customer> customers = customerRepository.findByBlocked(blocked, pageable);
 
-        return customers.map(customer -> customerMapper.mapToDTO(customer)).toSet();
+        return customers.map(new Function<Customer, CustomerDTO>() {
+            @Override
+            public CustomerDTO apply(Customer customer) {
+                return customerMapper.mapToDTO(customer);
+            }
+        });
     }
 
     @Override
     @AuthorizeAdmin
-    public Set<CustomerDTO> getAllUnblockedCustomers(boolean blocked, Pageable pageable) {
+    public Page<CustomerDTO> getAllUnblockedCustomers(boolean blocked, Pageable pageable) {
         Page<Customer> customers = customerRepository.findByBlocked(blocked, pageable);
 
-        return customers.map(customer -> customerMapper.mapToDTO(customer)).toSet();
+        return customers.map(new Function<Customer, CustomerDTO>() {
+            @Override
+            public CustomerDTO apply(Customer customer) {
+                return customerMapper.mapToDTO(customer);
+            }
+        });
     }
 
     @Override
@@ -99,4 +109,14 @@ public class CustomerService implements ICustomerService {
     public Customer getByUsernameAndBlocked(String username){
         return customerRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
+
+    @Override
+    public CustomerDTO getById(String id) {
+        Customer customer = customerRepository.findById(id).get();
+
+        if(customer != null) return customerMapper.mapToDTO(customer);
+
+        return null;
+    }
+
 }

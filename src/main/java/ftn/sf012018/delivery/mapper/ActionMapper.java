@@ -3,7 +3,7 @@ package ftn.sf012018.delivery.mapper;
 import ftn.sf012018.delivery.mapper.user.StoreMapper;
 import ftn.sf012018.delivery.model.dto.ActionDTO;
 import ftn.sf012018.delivery.model.mappings.Action;
-import ftn.sf012018.delivery.repository.ArticleRepository;
+import ftn.sf012018.delivery.contract.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

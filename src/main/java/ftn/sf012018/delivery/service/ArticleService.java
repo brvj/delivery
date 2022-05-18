@@ -1,4 +1,4 @@
-package ftn.sf012018.delivery.service.impl;
+package ftn.sf012018.delivery.service;
 
 import ftn.sf012018.delivery.lucene.indexing.handlers.*;
 import ftn.sf012018.delivery.lucene.search.QueryBuilderCustom;
@@ -11,11 +11,11 @@ import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.Article;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
-import ftn.sf012018.delivery.repository.ArticleRepository;
-import ftn.sf012018.delivery.repository.user.StoreRepository;
+import ftn.sf012018.delivery.contract.repository.ArticleRepository;
+import ftn.sf012018.delivery.contract.repository.user.StoreRepository;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAny;
-import ftn.sf012018.delivery.service.IArticleService;
+import ftn.sf012018.delivery.contract.service.IArticleService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -35,7 +35,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,6 +42,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 @Service
 public class ArticleService implements IArticleService {
@@ -103,10 +103,15 @@ public class ArticleService implements IArticleService {
 
     @Override
     @AuthorizeAny
-    public Set<ArticleResponseDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
+    public Page<ArticleResponseDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
         Page<Article> articles = articleRepository.findByStore(storeMapper.mapModel(storeDTO), pageable);
 
-        return articleMapper.mapToDTO(articles.toSet());
+        return articles.map(new Function<Article, ArticleResponseDTO>() {
+            @Override
+            public ArticleResponseDTO apply(Article article) {
+                return articleMapper.mapToDTO(article);
+            }
+        });
     }
 
     @Override
@@ -182,6 +187,15 @@ public class ArticleService implements IArticleService {
 
     @Override
     public File getResourceFilePath(String path) {
+        return null;
+    }
+
+    @Override
+    public ArticleResponseDTO getById(String id) {
+        Article article = articleRepository.findById(id).get();
+
+        if(article != null) return articleMapper.mapToDTO(article);
+
         return null;
     }
 

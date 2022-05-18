@@ -1,10 +1,11 @@
-package ftn.sf012018.delivery.service;
+package ftn.sf012018.delivery.contract.service;
 
 import ftn.sf012018.delivery.model.dto.ArticleRequestDTO;
 import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.Article;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.File;
@@ -21,7 +22,7 @@ public interface IArticleService {
 
     void reindex();
 
-    Set<ArticleResponseDTO> getByStore(StoreDTO storeDTO, Pageable pageable);
+    Page<ArticleResponseDTO> getByStore(StoreDTO storeDTO, Pageable pageable);
 
     Set<ArticleResponseDTO> getByStoreAndCustomQuery(ArticleQueryOptions articleQueryOptions);
 
@@ -30,4 +31,6 @@ public interface IArticleService {
     void indexUploadedFile(ArticleRequestDTO articleDTO) throws IOException;
 
     File getResourceFilePath(String path);
+
+    ArticleResponseDTO getById(String id);
 }

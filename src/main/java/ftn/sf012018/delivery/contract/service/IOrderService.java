@@ -1,9 +1,10 @@
-package ftn.sf012018.delivery.service;
+package ftn.sf012018.delivery.contract.service;
 
 import ftn.sf012018.delivery.model.dto.OrderDTO;
 import ftn.sf012018.delivery.model.query.OrderQueryOptions;
 
 import java.util.Set;
+
 
 public interface IOrderService {
     void index (OrderDTO orderDTO);
@@ -13,4 +14,6 @@ public interface IOrderService {
     void commentAndRate (OrderDTO orderDTO);
 
     void setOrderDelivered (OrderDTO orderDTO);
+
+    OrderDTO getById(String id);
 }

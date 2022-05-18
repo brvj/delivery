@@ -1,11 +1,10 @@
-package ftn.sf012018.delivery.service.impl.user;
+package ftn.sf012018.delivery.service.user;
 
 import ftn.sf012018.delivery.mapper.user.AdminMapper;
 import ftn.sf012018.delivery.model.dto.user.AdminDTO;
 import ftn.sf012018.delivery.model.mappings.user.Admin;
-import ftn.sf012018.delivery.repository.user.AdminRepository;
-import ftn.sf012018.delivery.security.annotations.AuthorizeAdmin;
-import ftn.sf012018.delivery.service.user.IAdminService;
+import ftn.sf012018.delivery.contract.repository.user.AdminRepository;
+import ftn.sf012018.delivery.contract.service.user.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,4 +33,14 @@ public class AdminService implements IAdminService {
     public Admin getByUsernameAndBlocked(String username) {
         return adminRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
     }
+
+    @Override
+    public AdminDTO getById(String id) {
+        Admin admin = adminRepository.findById(id).get();
+
+        if(admin != null) return adminMapper.mapToDTO(admin);
+
+        return null;
+    }
+
 }

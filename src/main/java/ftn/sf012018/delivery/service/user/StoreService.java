@@ -1,15 +1,16 @@
-package ftn.sf012018.delivery.service.impl.user;
+package ftn.sf012018.delivery.service.user;
 
 import ftn.sf012018.delivery.lucene.search.QueryBuilderCustom;
 import ftn.sf012018.delivery.mapper.user.StoreMapper;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.user.Store;
-import ftn.sf012018.delivery.repository.user.StoreRepository;
+import ftn.sf012018.delivery.contract.repository.user.StoreRepository;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
-import ftn.sf012018.delivery.service.user.IStoreService;
+import ftn.sf012018.delivery.contract.service.user.IStoreService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -18,7 +19,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.function.Function;
 
 @Service
 public class StoreService implements IStoreService {
@@ -67,12 +68,28 @@ public class StoreService implements IStoreService {
 
     @Override
     @AuthorizeAdminOrCustomer
-    public Set<StoreDTO> getAll(Pageable pageable) {
-        return storeMapper.mapToDTO(storeRepository.findAll(pageable).toSet());
+    public Page<StoreDTO> getAll(Pageable pageable) {
+        Page<Store> stores = storeRepository.findAll(pageable);
+
+        return stores.map(new Function<Store, StoreDTO>() {
+            @Override
+            public StoreDTO apply(Store store) {
+                return storeMapper.mapToDTO(store);
+            }
+        });
     }
 
     @Override
     public Store getByUsernameAndBlocked(String username){
         return storeRepository.findByUsernameAndBlocked(username, Boolean.FALSE);
+    }
+
+    @Override
+    public StoreDTO getById(String id) {
+        Store store = storeRepository.findById(id).get();
+
+        if(store != null) return storeMapper.mapToDTO(store);
+
+        return null;
     }
 }

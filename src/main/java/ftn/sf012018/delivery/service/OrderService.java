@@ -1,4 +1,4 @@
-package ftn.sf012018.delivery.service.impl;
+package ftn.sf012018.delivery.service;
 
 import ftn.sf012018.delivery.lucene.search.QueryBuilderCustom;
 import ftn.sf012018.delivery.lucene.search.SearchQueryGenerator;
@@ -7,9 +7,9 @@ import ftn.sf012018.delivery.mapper.OrderMapper;
 import ftn.sf012018.delivery.model.dto.OrderDTO;
 import ftn.sf012018.delivery.model.mappings.Order;
 import ftn.sf012018.delivery.model.query.OrderQueryOptions;
-import ftn.sf012018.delivery.repository.OrderRepository;
+import ftn.sf012018.delivery.contract.repository.OrderRepository;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
-import ftn.sf012018.delivery.service.IOrderService;
+import ftn.sf012018.delivery.contract.service.IOrderService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -64,7 +64,7 @@ public class OrderService implements IOrderService {
                 .should(ratingRangeQuery)
                 .should(customerQuery);
 
-        return searchByBoolQuery(boolQueryBuilder).map( orders -> orderMapper.mapToDTO(orders.getContent())).toSet();
+        return searchByBoolQuery(boolQueryBuilder).map(orders -> orderMapper.mapToDTO(orders.getContent())).toSet();
     }
 
     @Override
@@ -100,6 +100,15 @@ public class OrderService implements IOrderService {
         order.setDelivered(true);
 
         index(orderMapper.mapToDTO(order));
+    }
+
+    @Override
+    public OrderDTO getById(String id) {
+        Order order = orderRepository.findById(id).get();
+
+        if(order != null) return orderMapper.mapToDTO(order);
+
+        return null;
     }
 
     private SearchHits<Order> searchByBoolQuery(BoolQueryBuilder boolQueryBuilder) {

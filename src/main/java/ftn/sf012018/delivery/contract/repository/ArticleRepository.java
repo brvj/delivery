@@ -1,4 +1,4 @@
-package ftn.sf012018.delivery.repository;
+package ftn.sf012018.delivery.contract.repository;
 
 import ftn.sf012018.delivery.model.mappings.Article;
 import ftn.sf012018.delivery.model.mappings.user.Store;

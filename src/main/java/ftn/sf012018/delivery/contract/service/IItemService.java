@@ -1,4 +1,4 @@
-package ftn.sf012018.delivery.service;
+package ftn.sf012018.delivery.contract.service;
 
 import ftn.sf012018.delivery.model.dto.ItemDTO;
 

@@ -1,10 +1,9 @@
-package ftn.sf012018.delivery.service.user;
+package ftn.sf012018.delivery.contract.service.user;
 
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.mappings.user.Store;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Set;
 
 public interface IStoreService {
 
@@ -14,7 +13,9 @@ public interface IStoreService {
 
     StoreDTO getByUsernameAndPassword(String username, String password);
 
-    Set<StoreDTO> getAll(Pageable pageable);
+    Page<StoreDTO> getAll(Pageable pageable);
 
     Store getByUsernameAndBlocked(String username);
+
+    StoreDTO getById(String id);
 }

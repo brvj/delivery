@@ -4,13 +4,13 @@ import ftn.sf012018.delivery.model.dto.ArticleRequestDTO;
 import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
-import ftn.sf012018.delivery.service.impl.ArticleService;
+import ftn.sf012018.delivery.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Set;
@@ -55,7 +55,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<ArticleResponseDTO>> getAllByStore(@RequestBody StoreDTO storeDTO, Pageable pageable){
+    public ResponseEntity<Page<ArticleResponseDTO>> getAllByStore(@RequestBody StoreDTO storeDTO, Pageable pageable){
         try {
             return new ResponseEntity<>(articleService.getByStore(storeDTO, pageable), HttpStatus.OK);
 
@@ -71,5 +71,14 @@ public class ArticleController {
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<ArticleResponseDTO> getById(@PathVariable("id") String id){
+        ArticleResponseDTO response = articleService.getById(id);
+
+        if (response != null) return new ResponseEntity<>(response, HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

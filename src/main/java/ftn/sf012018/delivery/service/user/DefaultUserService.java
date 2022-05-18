@@ -1,4 +1,4 @@
-package ftn.sf012018.delivery.service.impl.user;
+package ftn.sf012018.delivery.service.user;
 
 import ftn.sf012018.delivery.lucene.search.QueryBuilderCustom;
 import ftn.sf012018.delivery.mapper.user.CustomerMapper;
@@ -13,7 +13,7 @@ import ftn.sf012018.delivery.model.mappings.user.Store;
 import ftn.sf012018.delivery.security.CustomPrincipal;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrStore;
-import ftn.sf012018.delivery.service.user.IDefaultUserService;
+import ftn.sf012018.delivery.contract.service.user.IDefaultUserService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;

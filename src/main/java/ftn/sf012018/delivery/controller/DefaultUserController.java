@@ -4,7 +4,7 @@ import ftn.sf012018.delivery.model.dto.user.AdminDTO;
 import ftn.sf012018.delivery.model.dto.user.CustomerDTO;
 import ftn.sf012018.delivery.model.dto.user.PasswordUpdateDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
-import ftn.sf012018.delivery.service.impl.user.DefaultUserService;
+import ftn.sf012018.delivery.service.user.DefaultUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

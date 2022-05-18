@@ -1,4 +1,4 @@
-package ftn.sf012018.delivery.service.user;
+package ftn.sf012018.delivery.contract.service.user;
 
 import ftn.sf012018.delivery.model.dto.user.AdminDTO;
 import ftn.sf012018.delivery.model.dto.user.CustomerDTO;

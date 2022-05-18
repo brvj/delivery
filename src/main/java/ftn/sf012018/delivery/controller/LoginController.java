@@ -2,7 +2,7 @@ package ftn.sf012018.delivery.controller;
 
 import ftn.sf012018.delivery.model.dto.user.LoginDTO;
 import ftn.sf012018.delivery.security.token.TokenUtils;
-import ftn.sf012018.delivery.service.impl.user.DefaultUserService;
+import ftn.sf012018.delivery.service.user.DefaultUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

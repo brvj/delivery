@@ -2,8 +2,6 @@ package ftn.sf012018.delivery.mapper.user;
 
 import ftn.sf012018.delivery.model.dto.user.AdminDTO;
 import ftn.sf012018.delivery.model.mappings.user.Admin;
-import ftn.sf012018.delivery.repository.user.AdminRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
