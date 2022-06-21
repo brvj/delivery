@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,21 +77,14 @@ public class ArticleController {
         }
     }
 
-    @GetMapping(value = "/{id}/img", produces = "application/json")
+    @GetMapping(value = "/{id}/img", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getImage(@PathVariable("id") String articleId) throws IOException {
-        ArticleResponseDTO article = articleService.getById(articleId);
-        File imgPath = new File("src/main/resources/images/" + article.getImage());
-        BufferedImage bufferedImage = ImageIO.read(imgPath);
-
-        WritableRaster raster = bufferedImage.getRaster();
-        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-
-     //   System.out.print(data);
-
-//        InputStream in = getClass()
-//                .getResourceAsStream("src/main/resources/images/" + article.getImage());
-
-        return new ResponseEntity<>(data.getData(), HttpStatus.OK);
+        try {
+            byte[] img = articleService.getArticleImage(articleId);
+            return new ResponseEntity<>(img, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping(value = "/query", produces = "application/json")

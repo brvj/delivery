@@ -36,6 +36,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -230,21 +234,15 @@ public class ArticleService implements IArticleService {
         String retVal = null;
         if (!file.isEmpty()) {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("C:\\Users\\Boris\\Desktop\\REPO\\delivery\\src\\main\\resources\\files" + File.separator + file.getOriginalFilename());
+            Path path = Paths.get("C:\\Users\\38161\\OneDrive\\Desktop\\Repo\\delivery-backend\\src\\main\\resources\\files"
+                    + File.separator + file.getOriginalFilename());
             Files.write(path, bytes);
-            Path filepath = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
+            Path filepath = Paths.get(uploadDir + File.separator +
+                    StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
             Files.write(filepath, bytes);
             retVal = path.toString();
         }
         return retVal;
-    }
-
-    @PostConstruct
-    private void imagesPath() {
-        String path = "src/main/resources/images/";
-
-        File file = new File(path);
-        folder = file.getAbsolutePath();
     }
 
     private String saveUploadedImageInFolder(MultipartFile file) throws IOException {
@@ -264,5 +262,16 @@ public class ArticleService implements IArticleService {
                 .build();
 
         return elasticsearchRestTemplate.search(searchQuery, Article.class,  IndexCoordinates.of("articles"));
+    }
+
+    public byte[] getArticleImage(String articleId) throws IOException {
+        ArticleResponseDTO article = getById(articleId);
+        File imgPath = new File("src/main/resources/images/" + article.getImage());
+        BufferedImage bufferedImage = ImageIO.read(imgPath);
+
+        WritableRaster raster = bufferedImage.getRaster();
+        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+
+        return data.getData();
     }
 }
