@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -49,6 +50,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authenticationTokenFilter;
     }
 
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/resources/images/**");
+//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -65,7 +70,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/login", "/api/index-customer", "/api/index-store").permitAll()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers( "/api/users/index-customer").permitAll()
+                .antMatchers("/api/users/index-store").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);

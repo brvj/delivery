@@ -5,6 +5,8 @@ import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
 import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
 import ftn.sf012018.delivery.service.ArticleService;
+import ftn.sf012018.delivery.service.user.StoreService;
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
 @RestController
@@ -20,6 +28,9 @@ import java.util.Set;
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private StoreService storeService;
 
     @PostMapping(path = "/index", consumes = { "multipart/form-data" })
     public ResponseEntity<Void> multiUploadFileModel(@ModelAttribute ArticleRequestDTO uploadModel) throws IOException {
@@ -54,14 +65,32 @@ public class ArticleController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<Page<ArticleResponseDTO>> getAllByStore(@RequestBody StoreDTO storeDTO, Pageable pageable){
+    @GetMapping(value = "/{id}/for-stores", produces = "application/json")
+    public ResponseEntity<Page<ArticleResponseDTO>> getAllByStore(@PathVariable("id") String storeId, Pageable pageable){
+        StoreDTO storeDTO = storeService.getById(storeId);
         try {
             return new ResponseEntity<>(articleService.getByStore(storeDTO, pageable), HttpStatus.OK);
 
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/{id}/img", produces = "application/json")
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") String articleId) throws IOException {
+        ArticleResponseDTO article = articleService.getById(articleId);
+        File imgPath = new File("src/main/resources/images/" + article.getImage());
+        BufferedImage bufferedImage = ImageIO.read(imgPath);
+
+        WritableRaster raster = bufferedImage.getRaster();
+        DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+
+     //   System.out.print(data);
+
+//        InputStream in = getClass()
+//                .getResourceAsStream("src/main/resources/images/" + article.getImage());
+
+        return new ResponseEntity<>(data.getData(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/query", produces = "application/json")

@@ -23,6 +23,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -104,30 +105,38 @@ public class ArticleService implements IArticleService {
     @Override
     @AuthorizeAny
     public Page<ArticleResponseDTO> getByStore(StoreDTO storeDTO, Pageable pageable) {
-        Page<Article> articles = articleRepository.findByStore(storeMapper.mapModel(storeDTO), pageable);
+        Query searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "store.id", storeDTO.getId()))
+                .build();
 
-        return articles.map(new Function<Article, ArticleResponseDTO>() {
-            @Override
-            public ArticleResponseDTO apply(Article article) {
-                return articleMapper.mapToDTO(article);
-            }
-        });
+        SearchHits<Article> articles =
+                elasticsearchRestTemplate.search(searchQuery, Article.class, IndexCoordinates.of("articles"));
+        Set<ArticleResponseDTO> articlesSet = articles.map(articlesFunc -> articleMapper.mapToDTO(articlesFunc.getContent())).toSet();
+
+        final int start = (int) pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), articlesSet.size());
+        final Page<ArticleResponseDTO> page = new PageImpl<>(articlesSet.stream().toList().subList(start, end),pageable, articlesSet.size());
+
+        return page;
     }
 
     @Override
     @AuthorizeAny
     public Set<ArticleResponseDTO> getByStoreAndCustomQuery(ArticleQueryOptions articleQueryOptions) {
+        QueryBuilder storeQuery = SearchQueryGenerator.createMatchQueryBuilder(
+                new SimpleQueryElasticsearch("_store.id", articleQueryOptions.getStoreDTO().getId()));
         QueryBuilder nameQuery = SearchQueryGenerator.createMatchQueryBuilder(
-                new SimpleQueryElasticsearch("name", articleQueryOptions.getName()));
+                new SimpleQueryElasticsearch("_name", articleQueryOptions.getName()));
         QueryBuilder descriptionQuery = SearchQueryGenerator.createMatchQueryBuilder(
-                new SimpleQueryElasticsearch("description", articleQueryOptions.getDescription()));
+                new SimpleQueryElasticsearch("_description", articleQueryOptions.getDescription()));
         QueryBuilder priceRangeQuery = SearchQueryGenerator.createRangeQueryBuilder(
-                new SimpleQueryElasticsearch("price", String.valueOf(articleQueryOptions.getPriceStart())+"-"+
+                new SimpleQueryElasticsearch("_price", String.valueOf(articleQueryOptions.getPriceStart())+"-"+
                         String.valueOf(articleQueryOptions.getPriceEnd())));
         //TODO implementirati za opseg ocene i obseg broja komentara artikla i po prodavcu
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders
                 .boolQuery()
+                .should(storeQuery)
                 .should(nameQuery)
                 .should(descriptionQuery)
                 .should(priceRangeQuery);
@@ -177,7 +186,7 @@ public class ArticleService implements IArticleService {
         if(fileName != null){
             Article articleIndexUnit = getHandler(fileName).getIndexUnit(new File(fileName));
             articleIndexUnit.setName(articleDTO.getName());
-            articleIndexUnit.setImagePath(imagePath);
+            articleIndexUnit.setImagePath(articleDTO.getImage().getOriginalFilename());
             articleIndexUnit.setPrice(articleDTO.getPrice());
             articleIndexUnit.setStore(storeRepository.findById(articleDTO.getStoreDTO().getId()).get());
 
