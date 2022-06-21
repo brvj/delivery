@@ -50,10 +50,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return authenticationTokenFilter;
     }
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/resources/images/**");
-//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
