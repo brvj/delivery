@@ -4,12 +4,16 @@ import ftn.sf012018.delivery.lucene.search.QueryBuilderCustom;
 import ftn.sf012018.delivery.lucene.search.SearchQueryGenerator;
 import ftn.sf012018.delivery.lucene.search.SimpleQueryElasticsearch;
 import ftn.sf012018.delivery.mapper.OrderMapper;
+import ftn.sf012018.delivery.model.dto.ArticleResponseDTO;
+import ftn.sf012018.delivery.model.dto.ItemDTO;
 import ftn.sf012018.delivery.model.dto.OrderDTO;
+import ftn.sf012018.delivery.model.mappings.Article;
 import ftn.sf012018.delivery.model.mappings.Order;
 import ftn.sf012018.delivery.model.query.OrderQueryOptions;
 import ftn.sf012018.delivery.contract.repository.OrderRepository;
 import ftn.sf012018.delivery.security.annotations.AuthorizeAdminOrCustomer;
 import ftn.sf012018.delivery.contract.service.IOrderService;
+import ftn.sf012018.delivery.service.user.CustomerService;
 import ftn.sf012018.delivery.util.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -23,6 +27,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Service
@@ -34,10 +39,25 @@ public class OrderService implements IOrderService {
     private OrderMapper orderMapper;
 
     @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private ArticleService articleService;
+
+    @Autowired
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     @Override
-    public void index(OrderDTO orderDTO) { orderRepository.save(orderMapper.mapModel(orderDTO)); }
+    public void index(OrderDTO orderDTO) {
+        orderDTO.setCustomerDTO(customerService.getById(orderDTO.getCustomerDTO().getId()));
+        for(ItemDTO item: orderDTO.getItemDTOS()){
+            item.setArticleDTO(articleService.getById(item.getArticleDTO().getId()));
+        }
+        orderDTO.setOrderDate(LocalDate.now());
+        orderDTO.setDelivered(false);
+
+        orderRepository.save(orderMapper.mapModel(orderDTO));
+    }
 
     @Override
     @AuthorizeAdminOrCustomer
@@ -65,6 +85,18 @@ public class OrderService implements IOrderService {
                 .should(customerQuery);
 
         return searchByBoolQuery(boolQueryBuilder).map(orders -> orderMapper.mapToDTO(orders.getContent())).toSet();
+    }
+
+    public Set<OrderDTO> getByUser(String userId){
+        Query searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilderCustom.buildQuery(SearchType.MATCH, "customer.id", userId))
+                .build();
+
+        SearchHits<Order> orders =
+                elasticsearchRestTemplate.search(searchQuery, Order.class, IndexCoordinates.of("orders"));
+        Set<OrderDTO> ordersSet = orders.map(orderFunc -> orderMapper.mapToDTO(orderFunc.getContent())).toSet();
+
+        return ordersSet;
     }
 
     @Override

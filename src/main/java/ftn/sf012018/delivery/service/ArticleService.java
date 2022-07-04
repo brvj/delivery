@@ -186,7 +186,7 @@ public class ArticleService implements IArticleService {
     @Override
     public void indexUploadedFile(ArticleRequestDTO articleDTO) throws IOException {
         String fileName = saveUploadedFileInFolder(articleDTO.getDescription());
-        String imagePath = saveUploadedImageInFolder(articleDTO.getImage());
+        // saveUploadedImageInFolder(articleDTO.getImage());
         if(fileName != null){
             Article articleIndexUnit = getHandler(fileName).getIndexUnit(new File(fileName));
             articleIndexUnit.setName(articleDTO.getName());
@@ -234,7 +234,7 @@ public class ArticleService implements IArticleService {
         String retVal = null;
         if (!file.isEmpty()) {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("C:\\Users\\38161\\OneDrive\\Desktop\\Repo\\delivery-backend\\src\\main\\resources\\files"
+            Path path = Paths.get("C:\\Users\\Boris\\Desktop\\REPO\\delivery\\src\\main\\resources\\files"
                     + File.separator + file.getOriginalFilename());
             Files.write(path, bytes);
             Path filepath = Paths.get(uploadDir + File.separator +

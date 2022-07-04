@@ -1,6 +1,7 @@
 package ftn.sf012018.delivery.controller;
 
 import ftn.sf012018.delivery.model.dto.OrderDTO;
+import ftn.sf012018.delivery.model.dto.user.CustomerDTO;
 import ftn.sf012018.delivery.model.query.OrderQueryOptions;
 import ftn.sf012018.delivery.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class OrderController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<Set<OrderDTO>> getByQuery(@RequestBody OrderQueryOptions orderQueryOptions){
+    public ResponseEntity<Set<OrderDTO>> getByQuery(@RequestParam("userId") String userId){
         try {
-            return new ResponseEntity<>(orderService.getByCustomQuery(orderQueryOptions), HttpStatus.OK);
+            return new ResponseEntity<>(orderService.getByUser(userId), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

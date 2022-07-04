@@ -6,7 +6,6 @@ import ftn.sf012018.delivery.model.dto.user.StoreDTO;
 import ftn.sf012018.delivery.model.query.ArticleQueryOptions;
 import ftn.sf012018.delivery.service.ArticleService;
 import ftn.sf012018.delivery.service.user.StoreService;
-import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Set;
 
 @RestController
@@ -35,6 +28,7 @@ public class ArticleController {
 
     @PostMapping(path = "/index", consumes = { "multipart/form-data" })
     public ResponseEntity<Void> multiUploadFileModel(@ModelAttribute ArticleRequestDTO uploadModel) throws IOException {
+
         try {
             articleService.indexUploadedFile(uploadModel);
 
@@ -55,7 +49,7 @@ public class ArticleController {
         }
     }
 
-    @DeleteMapping(consumes = { "multipart/form-data" })
+    @DeleteMapping(consumes = "application/json")
     public ResponseEntity<String> deleteArticle(@ModelAttribute ArticleRequestDTO articleDTO){
         try {
             articleService.delete(articleDTO);
@@ -86,9 +80,30 @@ public class ArticleController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+//
     @GetMapping(value = "/query", produces = "application/json")
-    public ResponseEntity<Set<ArticleResponseDTO>> getByCustomQuery(@RequestBody ArticleQueryOptions articleQueryOptions){
+    public ResponseEntity<Set<ArticleResponseDTO>> getByCustomQuery(@RequestParam("name") String name,
+                                                                    @RequestParam("description") String description,
+                                                                    @RequestParam("priceStart") float priceStart,
+                                                                    @RequestParam("priceEnd") float priceEnd,
+                                                                    @RequestParam("id") String id){
+        ArticleQueryOptions articleQueryOptions = new ArticleQueryOptions();
+        if(name != "") {
+            articleQueryOptions.setName(name);
+        }
+        if(description != "") {
+            articleQueryOptions.setDescription(description);
+        }
+        if(priceStart != 0) {
+            articleQueryOptions.setPriceStart(priceStart);
+        }
+        if(priceEnd != 0) {
+            articleQueryOptions.setPriceEnd(priceEnd);
+        }
+        StoreDTO storeDTO = new StoreDTO();
+        storeDTO.setId(id);
+        articleQueryOptions.setStoreDTO(storeDTO);
+
         try {
             return new ResponseEntity<>(articleService.getByStoreAndCustomQuery(articleQueryOptions), HttpStatus.OK);
         } catch (Exception e){
